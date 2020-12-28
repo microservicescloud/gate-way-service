@@ -5,14 +5,15 @@ plugins {
     id "java"
 }
 
-group "org.example"
-version "1.0-SNAPSHOT"
+group "com.cs.gws"
+version "1.0.0"
 sourceCompatibility = "1.8"
 ext {
     set('springCloudVersion', "Hoxton.SR1")
 }
 repositories {
     mavenCentral()
+    mavenLocal()
     maven { url 'https://repo.spring.io/milestone' }
 }
 
@@ -22,7 +23,11 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
     implementation "io.jsonwebtoken:jjwt-api:0.10.7"
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    implementation "io.jsonwebtoken:jjwt-impl:0.10.7"
+    implementation "io.jsonwebtoken:jjwt-jackson:0.10.7"
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
+    implementation "com.cs.cs:common-service:1.0-SNAPSHOT"
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group: "org.junit.vintage", module: "junit-vintage-engine"
     }

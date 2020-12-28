@@ -1,28 +1,19 @@
-package com.cs.gss.security;
-
-import lombok.AllArgsConstructor;
+package com.cs.gws.security;
+import com.cs.cs.security.JwtConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletResponse;
 
-@Configuration
 @EnableWebSecurity
-@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private JwtAuthenticationConfig config;
+    @Autowired
+    private JwtConfig config;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -30,12 +21,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .logout().disable()
                 .formLogin().disable()
+                // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().anonymous()
                 .and().exceptionHandling().authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and().addFilterAfter(new JwtTokenAuthenticateFilter(config), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(config.getUrl()).permitAll() // Allow this for all
+                .antMatchers("/auth/**").permitAll() // Allow this for all
+                .antMatchers("/order/**").hasRole("USER")
+                .antMatchers("/product/**").hasRole("USER")
                 .anyRequest().authenticated();
+    }
+
+    @Bean
+    public JwtConfig jwtConfig() {
+        return new JwtConfig();
     }
 }

@@ -1,5 +1,7 @@
-package com.cs.gss.security;
+package com.cs.gws.security;
 
+import com.cs.cs.security.JwtConfig;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,11 +17,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.jsonwebtoken.Claims;
-
 @AllArgsConstructor
 public class JwtTokenAuthenticateFilter extends OncePerRequestFilter {
-    private JwtAuthenticationConfig jwtConfig;
+    private JwtConfig jwtConfig;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

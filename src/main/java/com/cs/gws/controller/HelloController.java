@@ -1,4 +1,4 @@
-package com.cs.gss.controller;
+package com.cs.gws.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +8,7 @@ public class HelloController {
 
 	@RequestMapping("/")
 	public String index() {
-		return "Greetings from Spring Boot live hot swapping";
+		return "Greetings from Gate way service";
 	}
 
 	@RequestMapping("/test")
